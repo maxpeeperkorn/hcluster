@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hcluster"
+version = "0.0.1"
+authors = [{ name = "Max Peeperkorn", email = "max.peeperkorn@protonmail.com" }]
+description = "Hierarchical clustering using quartet trees and normalised compression distance"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT License" }
+keywords = [
+    "algoritmic information theory",
+    "hierarchical clustering",
+    "quartet trees",
+    "compression",
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+]
+dependencies = ["networkx~=3.1"]
+
+[project.scripts]
+hcluster = "hcluster.scripts:main"
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.autopep8]
+ignore = []
+max-line-length = 100
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
