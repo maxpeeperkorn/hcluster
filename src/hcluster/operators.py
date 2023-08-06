@@ -49,3 +49,10 @@ def subtree_transfer(G):
     G.remove_edge(w, v)
     G.add_edges_from([(u, w), (u, v)])
     return G
+
+
+operators = [
+    leaf_swap,
+    subtree_swap,
+    subtree_transfer
+]
