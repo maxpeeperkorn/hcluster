@@ -24,7 +24,7 @@ while budget > 0:
     for operator in k_mutation:
         T_prime = operator(T_prime)
 
-    score = evaluate(T_prime, cost_fn)
+    score = hcluster.evaluation.evaluate(T_prime, cost_fn)
 
     if score > best_score:
         best_score = score
