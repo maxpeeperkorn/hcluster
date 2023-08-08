@@ -3,7 +3,7 @@ import math
 import networkx as nx
 import random
 
-from hcluster.tree import select_nodes, get_nodes
+from hcluster.tree import get_nodes
 
 
 def permutation(xs):
@@ -16,6 +16,20 @@ def __has_two_leafs(G, u):
     leaf_nodes = get_nodes(G, "s")
     leaf_count = sum([1 for node in G.neighbors(u) if node in leaf_nodes])
     return leaf_count > 1
+
+
+def select_nodes(G, node_label=None, min_distance=3):
+    nodes = get_nodes(G, node_label)
+
+    u, w = random.choices(nodes, k=2)
+    path = nx.shortest_path(G, u, w)
+
+    while len(path) < min_distance:
+        w = random.choice(nodes)
+        path = nx.shortest_path(G, u, w)
+
+    x, y = path[1], path[-2]
+    return (u, w), (x, y)
 
 
 def leaf_swap(G):
@@ -40,14 +54,14 @@ def subtree_transfer(G):
     while __has_two_leafs(G, u):
         u = random.choice(internal_nodes)
 
-    # -- detach node and join the two remaing subtrees
+    # detach node and join the two remaing subtrees
     neighbors = [node for node in G.neighbors(u)
                  if node in internal_nodes]
     a, b = permutation(neighbors)[:2]
     G.remove_edges_from([(u, a), (u, b)])
     G.add_edge(a, b)
 
-    # -- reattach detached subtree
+    # reattach detached subtree
     subtree_edges = list(nx.bfs_edges(G, a))  # pick edge in remaing subtree
     w, v = random.choice(subtree_edges)
     G.remove_edge(w, v)

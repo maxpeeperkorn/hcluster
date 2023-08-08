@@ -12,20 +12,6 @@ def get_nodes(G, node_type=None):
             if node_type is None or type_ == node_type]
 
 
-def select_nodes(G, node_label=None, min_distance=3):
-    nodes = get_nodes(G, node_label)
-
-    u, w = random.choices(nodes, k=2)
-    path = nx.shortest_path(G, u, w)
-
-    while len(path) < min_distance:
-        w = random.choice(nodes)
-        path = nx.shortest_path(G, u, w)
-
-    x, y = path[1], path[-2]
-    return (u, w), (x, y)
-
-
 def quartet_tree(n):
     """ Create a quartet tree with `n` leaf nodes and `n - 2` internal nodes. """
     m = 2 * n - 2
