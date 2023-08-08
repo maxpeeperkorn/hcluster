@@ -21,8 +21,8 @@ best_score = -1
 
 while budget > 0:
     T_prime = T
+    
     k_mutation = hcluster.operators.k_mutation_sequence(operators, max_k)
-
     for operator in k_mutation:
         T_prime = operator(T_prime)
 
@@ -37,7 +37,7 @@ while budget > 0:
 ```
 
 # References
-This library is implementing the work in the papers below:
+This library is implementing the work in the following papers:
 
 Cilibrasi, R. L., & Vitányi, P. M. (2005). Clustering by compression. IEEE Transactions on Information theory, 51(4), 1523-1545.
 
