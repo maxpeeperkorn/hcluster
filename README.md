@@ -5,6 +5,8 @@ Hierarchical clustering using quartet trees and normalised compression distance.
 # Usage
 
 ```python
+import hcluster
+
 n = 6
 max_k = 16
 
@@ -33,3 +35,10 @@ while budget > 0:
     if budget == 0 or best_score == 1:
         break
 ```
+
+# References
+This library is implementing the work in the papers below:
+
+Cilibrasi, R. L., & Vitányi, P. M. (2005). Clustering by compression. IEEE Transactions on Information theory, 51(4), 1523-1545.
+
+Cilibrasi, R. L., & Vitányi, P. M. (2011). A fast quartet tree heuristic for hierarchical clustering. Pattern recognition, 44(3), 662-677.

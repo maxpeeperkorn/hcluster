@@ -47,7 +47,7 @@ def quartet_tree(n):
 
     # relabel first leaf nodes then internal nodes, so that
     # the leaf indices map to the distance matrix.
-    all_nodes = get_nodes(T, 's') + get_nodes(T, 'n')
-    mapping = {node: i for node, i in zip(all_nodes, range(m))}
+    nodes = get_nodes(T, 's') + get_nodes(T, 'n')
+    mapping = {node: i for node, i in zip(nodes, range(m))}
     T = nx.relabel_nodes(T, mapping)
     return T

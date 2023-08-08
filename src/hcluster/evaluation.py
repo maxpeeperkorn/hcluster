@@ -1,6 +1,6 @@
+import functools
 import itertools
 import networkx as nx
-import functools
 import zlib
 
 
