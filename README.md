@@ -32,12 +32,13 @@ while budget > 0:
         best_score = score
         T = T_
 
-    if budget == 0 or best_score == 1:
+    if best_score == 1:
         break
+
+print(best_score)
 ```
 
 # References
-This library is implementing the work in the following papers:
 
 Cilibrasi, R. L., & Vitányi, P. M. (2005). Clustering by compression. IEEE Transactions on Information theory, 51(4), 1523-1545.
 
