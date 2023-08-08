@@ -1,17 +1,20 @@
 import networkx as nx
 import random
+import math
+import functools
 
 from hcluster.tree import select_nodes, get_nodes
-from hcluster.utils import permutation
 
 
-def __count_leafs(G, u):
-    l_nodes = get_nodes(G, "s")
-    return sum([1 for node in G.neighbors(u) if node in l_nodes])
+def permutation(xs):
+    xs = xs[:]
+    random.shuffle(xs)
+    return xs
 
 
 def __has_two_leafs(G, u):
-    return __count_leafs(G, u) > 1
+    l_nodes = get_nodes(G, "s")
+    return sum([1 for node in G.neighbors(u) if node in l_nodes]) > 1
 
 
 def leaf_swap(G):
@@ -49,6 +52,18 @@ def subtree_transfer(G):
     G.remove_edge(w, v)
     G.add_edges_from([(u, w), (u, v)])
     return G
+
+
+@functools.cache
+def k_mutation_probabilities(max_k):
+    return [1 / ((k + 2) * math.log(k + 2, 2) ** 2) 
+            for k in range(1, max_k + 1)]
+
+
+def k_mutation_sequence(operators, max_k=16):
+    p_k = k_mutation_probabilities(max_k)
+    k = random.choices(range(1, max_k + 1), weights=p_k, k=1)[0]
+    return [random.choice(operators) for _ in range(k)]
 
 
 operators = [

@@ -1,8 +1,41 @@
 import itertools
 import networkx as nx
+import functools
+import zlib
 
-from hcluster.tree import get_nodes
-from hcluster.metrics import NCD, tree_benefit_score, normalised_tree_benefit_score
+
+def C(x):
+    """ Approximates Kolmogorov Complexity. `K(x) ≃ C(x)` """
+    obj = zlib.compressobj(level=9, wbits=-15)
+    C_x = obj.compress(x if isinstance(x, bytes) else x.encode()) + obj.flush()
+    return len(C_x)
+
+
+def NCD(x, y):
+    """ Returns the Normalised Compressed Distance of x and y"""
+    C_x, C_y = C(x), C(y)
+    return (C(x + y) - min(C_x, C_y)) / max(C_x, C_y)
+
+
+def tree_benefit_score(cost_fn, quartets):
+    return sum([cost_fn(quartet) for quartet in quartets])
+
+
+def normalised_tree_benefit_score(tree_benefit_score, min, max):
+    return 1 - (tree_benefit_score - min) / (max - min)
+
+
+@functools.cache
+def __all_quartets(n):
+    """ Returns all quartet combinations for `n` leaf nodes. """
+    return itertools.combinations(range(n), r=4)
+
+
+@functools.cache
+def __all_pairs(quartet):
+    """ Returns all possible pairings for a quartet. """
+    u, v, w, x = quartet
+    return [(u, v, w, x), (u, w, v, x), (u, x, v, w)]
 
 
 def is_consistent(G, quartet):
@@ -12,23 +45,18 @@ def is_consistent(G, quartet):
     return len(uv_path.intersection(wx_path)) == 0
 
 
-def all_possible_pairs(quartet):
-    u, v, w, x = quartet
-    return [(u, v, w, x), (u, w, v, x), (u, x, v, w)]
-
-
-def compute_cost_bounds(quartets, cost_fn):
+def compute_cost_bounds(cost_function, quartets):
     min_cost, max_cost = 0, 0
     for quartet in quartets:
-        scores = [cost_fn(quartet) for quartet in all_possible_pairs(quartet)]
+        scores = [cost_function(quartet) for quartet in __all_pairs(quartet)]
         min_cost += min(scores)
         max_cost += max(scores)
     return min_cost, max_cost
 
 
-def compute_cost(cost_fn, quartets):
-    min_cost, max_cost = compute_cost_bounds(cost_fn, quartets)
-    S = tree_benefit_score(cost_fn, quartets)
+def compute_cost(cost_function, quartets):
+    min_cost, max_cost = compute_cost_bounds(cost_function, quartets)
+    S = tree_benefit_score(cost_function, quartets)
     return normalised_tree_benefit_score(S, min_cost, max_cost)
 
 
@@ -40,18 +68,15 @@ def compute_distance_matrix(dataset, key="obj"):
         for j in range(n):
             row.append(NCD(dataset[i][key], dataset[j][key]))
         D.append(row)
-    return D
 
-
-def create_cost_fn(D):
-    def __pair_distance(quartet):
+    def cost_function(quartet):
         u, v, w, x = quartet
         return D[u][v] + D[w][x]
-    return __pair_distance
+
+    return D, cost_function
 
 
-def evaluate(T, cost_fn):
-    nodes = get_nodes(T, 's')
-    quartets = [list(quartet) for quartet in itertools.combinations(nodes, r=4)
+def evaluate(T, cost_function):
+    quartets = [list(quartet) for quartet in __all_quartets(T.graph['n'])
                 if is_consistent(T, quartet)]
-    return compute_cost(cost_fn, quartets)
+    return compute_cost(cost_function, quartets)
