@@ -31,6 +31,7 @@ while budget > 0:
         T = T_prime
     
     budget = budget -1
+    
     if best_score == 1:
         break
 
