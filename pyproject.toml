@@ -23,7 +23,9 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
 ]
-dependencies = ["networkx~=3.1"]
+dependencies = [
+    "networkx~=3.1"
+]
 
 # [project.scripts]
 # hcluster = "hcluster.scripts:main"

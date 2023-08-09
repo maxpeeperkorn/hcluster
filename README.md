@@ -16,7 +16,6 @@ T = hcluster.quartet_tree(n)
 D, cost_fn = hcluster.compute_distance_matrix(dataset)
 operators = hcluster.default_operators
 
-
 while budget > 0:
     T_prime = T
     
@@ -30,8 +29,8 @@ while budget > 0:
         best_score = score
         T = T_prime
     
-    budget = budget -1
-    
+    budget = budget - 1
+
     if best_score == 1:
         break
 
