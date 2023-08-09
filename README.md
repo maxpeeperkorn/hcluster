@@ -9,29 +9,28 @@ import hcluster
 
 n = 6
 max_k = 16
-
-T = hcluster.tree.quartet_tree(n)
-D, cost_fn = hcluster.evaluation.compute_distance_matrix(dataset)
-operators = [hcluster.operators.leaf_swap,
-             hcluster.operators.subtree_swap,
-             hcluster.operators.subtree_transfer]
-
 budget = 1000
 best_score = -1
+
+T = hcluster.quartet_tree(n)
+D, cost_fn = hcluster.compute_distance_matrix(dataset)
+operators = hcluster.default_operators
+
 
 while budget > 0:
     T_prime = T
     
-    k_mutation = hcluster.operators.k_mutation_sequence(operators, max_k)
+    k_mutation = hcluster.k_mutation_sequence(operators, max_k)
     for operator in k_mutation:
         T_prime = operator(T_prime)
 
-    score = hcluster.evaluation.evaluate(T_prime, cost_fn)
+    score = hcluster.evaluate(T_prime, cost_fn)
 
     if score > best_score:
         best_score = score
-        T = T_
-
+        T = T_prime
+    
+    budget = budget -1
     if best_score == 1:
         break
 

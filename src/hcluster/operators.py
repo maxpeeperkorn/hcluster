@@ -3,7 +3,7 @@ import math
 import networkx as nx
 import random
 
-from hcluster.tree import get_nodes
+from .tree import get_nodes
 
 
 def permutation(xs):

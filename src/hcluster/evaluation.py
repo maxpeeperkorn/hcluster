@@ -28,14 +28,13 @@ def normalised_tree_benefit_score(tree_benefit_score, min, max):
 @functools.cache
 def __all_quartets(n):
     """ Returns all quartet combinations for `n` leaf nodes. """
-    return itertools.combinations(range(n), r=4)
+    return [list(quartet) for quartet in itertools.combinations(range(n), r=4)]
 
 
-@functools.cache
 def __all_pairs(quartet):
     """ Returns all possible pairings for a quartet. """
     u, v, w, x = quartet
-    return [(u, v, w, x), (u, w, v, x), (u, x, v, w)]
+    return [[u, v, w, x], [u, w, v, x], [u, x, v, w]]
 
 
 def is_consistent(G, quartet):
@@ -56,6 +55,7 @@ def compute_cost_bounds(cost_function, quartets):
 
 def compute_cost(cost_function, quartets):
     min_cost, max_cost = compute_cost_bounds(cost_function, quartets)
+
     S = tree_benefit_score(cost_function, quartets)
     return normalised_tree_benefit_score(S, min_cost, max_cost)
 
@@ -77,6 +77,6 @@ def compute_distance_matrix(dataset, key="obj"):
 
 
 def evaluate(T, cost_function):
-    quartets = [list(quartet) for quartet in __all_quartets(T.graph['n'])
+    quartets = [quartet for quartet in __all_quartets(T.graph['n'])
                 if is_consistent(T, quartet)]
     return compute_cost(cost_function, quartets)
