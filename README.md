@@ -7,6 +7,14 @@ Hierarchical clustering using quartet trees and normalised compression distance.
 ```python
 import hcluster
 
+dataset = [
+    {"label": "0", "obj": "..."},
+    {"label": "1", "obj": "..."},
+    {"label": "2", "obj": "..."},
+    ...,
+    {"label": "n", "obj": "..."},
+]
+
 n = 6
 max_k = 16
 budget = 1000
