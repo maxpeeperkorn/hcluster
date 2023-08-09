@@ -15,12 +15,13 @@ keywords = [
     "hierarchical clustering",
     "quartet trees",
     "normalised compression distance",
-    "compression",
+    "kolmogorov complexity",
 ]
 classifiers = [
+    "Development Status :: 4 - Beta",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
 ]
 dependencies = ["networkx~=3.1"]
 
