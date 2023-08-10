@@ -9,7 +9,7 @@ authors = [{ name = "Max Peeperkorn", email = "max.peeperkorn@protonmail.com" }]
 description = "Hierarchical clustering using quartet trees and normalised compression distance"
 readme = "README.md"
 requires-python = ">=3.8"
-license = { text = "MIT License" }
+license = { text = "BSD 3-Clause License" }
 keywords = [
     "algoritmic information theory",
     "hierarchical clustering",
@@ -19,7 +19,7 @@ keywords = [
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: BSD 3-Clause License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
 ]
